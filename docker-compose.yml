@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  pismo-mysql:
+    image: mysql:5.7
+    container_name: pismo-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pismo
+      MYSQL_USER: pismo_user
+      MYSQL_PASSWORD: pismo_pw
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+#  pismo-creditcard:
+#    build: .
+#    container_name: pismo-creditcard
+#    ports:
+#      - 8080:8080
+#    depends_on:
+#      - pismo-mysql
