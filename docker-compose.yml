@@ -12,10 +12,10 @@ services:
       - 3306:3306
     volumes:
       - ./db:/docker-entrypoint-initdb.d/
-#  pismo-creditcard:
-#    build: .
-#    container_name: pismo-creditcard
-#    ports:
-#      - 8080:8080
-#    depends_on:
-#      - pismo-mysql
+  pismo-creditcard:
+    image: philipetl/pismo:1.0
+    container_name: pismo-creditcard
+    ports:
+      - 8080:8080
+    depends_on:
+      - pismo-mysql

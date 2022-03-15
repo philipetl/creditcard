@@ -1,1 +1,3 @@
 # creditcard
+
+docker-compose up
