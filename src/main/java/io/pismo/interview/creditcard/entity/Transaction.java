@@ -1,22 +1,26 @@
 package io.pismo.interview.creditcard.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Table(name = "transactions")
 @EntityListeners(AuditingEntityListener.class)
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(NON_NULL)
 public class Transaction {
     @Id
