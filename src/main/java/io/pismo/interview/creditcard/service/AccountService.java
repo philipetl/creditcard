@@ -2,7 +2,6 @@ package io.pismo.interview.creditcard.service;
 
 import io.pismo.interview.creditcard.entity.Account;
 import io.pismo.interview.creditcard.repository.AccountRepository;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
