@@ -6,8 +6,6 @@ import io.pismo.interview.creditcard.exception.InvalidOperationTypeException;
 import io.pismo.interview.creditcard.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
-import static java.math.BigDecimal.ZERO;
-
 @Service
 public class TransactionService {
 
@@ -30,14 +28,17 @@ public class TransactionService {
             return transaction;
         } else if (operationType.getAllowPositive()) {
             if (transaction.getAmount().doubleValue() < 0) {
-                throw new InvalidOperationTypeException(String.format("Operation type %s does not allow negative amount value %s.",
+                throw new InvalidOperationTypeException(String.format("Operation type (%s) does not allow negative amount value (%s).",
+                        operationType.getDescription(), transaction.getAmount()));
+            }
+        } else if (operationType.getAllowNegative()) {
+            if (transaction.getAmount().doubleValue() >= 0) {
+                throw new InvalidOperationTypeException(String.format("Operation type (%s) does not allow positive amount value (%s).",
                         operationType.getDescription(), transaction.getAmount()));
             }
         } else {
-            if (transaction.getAmount().doubleValue() >= 0) {
-                throw new InvalidOperationTypeException(String.format("Operation type %s does not allow positive amount value %s.",
-                        operationType.getDescription(), transaction.getAmount()));
-            }
+            throw new InvalidOperationTypeException(String.format("Operation type (%s) does not allow any amount value (%s).",
+                    operationType.getDescription(), transaction.getAmount()));
         }
 
         return transaction;
