@@ -1,6 +1,5 @@
 # pismo creditcard interview application 
 [![logo-pismo](https://pismo.io/wp-content/uploads/2021/11/pismo-logo.png)](https://pismo.io/pt/)
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
 ## To run
 ### Clone from 
