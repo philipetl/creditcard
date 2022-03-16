@@ -11,6 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -42,11 +43,10 @@ class OperationTypeServiceTest {
         long nonExistentOperationTypeId = 123L;
         when(mockOperationTypeRepository.findById(nonExistentOperationTypeId)).thenReturn(Optional.empty());
 
-        try {
-            operationTypeService.getById(nonExistentOperationTypeId);
-        } catch (Exception actualException) {
-            assertEquals(EntityNotFoundException.class, actualException.getClass());
-            assertEquals("Operation type with id 123 not found.", actualException.getMessage());
-        }
+        EntityNotFoundException actualException = assertThrows(
+                EntityNotFoundException.class,
+                () -> operationTypeService.getById(nonExistentOperationTypeId));
+
+        assertEquals(String.format("Operation type with id %d not found.", nonExistentOperationTypeId), actualException.getMessage());
     }
 }

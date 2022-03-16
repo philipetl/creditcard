@@ -11,6 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -37,11 +38,10 @@ class AccountServiceTest {
         long nonExistentAccountId = 123L;
         when(mockAccountRepository.findById(nonExistentAccountId)).thenReturn(Optional.empty());
 
-        try {
-            accountService.getById(nonExistentAccountId);
-        } catch (Exception actualException) {
-            assertEquals(EntityNotFoundException.class, actualException.getClass());
-            assertEquals("Account with id 123 not found.", actualException.getMessage());
-        }
+        EntityNotFoundException actualException = assertThrows(
+                EntityNotFoundException.class,
+                () -> accountService.getById(nonExistentAccountId));
+
+        assertEquals(String.format("Account with id %d not found.", nonExistentAccountId), actualException.getMessage());
     }
 }
