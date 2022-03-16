@@ -9,7 +9,7 @@ git clone https://github.com/philipetl/creditcard.git
 ```
 #### SSH
 ```sh
-git@github.com:philipetl/creditcard.git
+git clone git@github.com:philipetl/creditcard.git
 ```
 
 ### Change to project directory
