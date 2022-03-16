@@ -28,14 +28,14 @@ class AccountControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    AccountService mockAcccountService;
+    AccountService mockAccountService;
 
     @Test
     void getShouldReturnAccount() throws Exception {
         long accountId = 1;
         Account mockAccount = Account.builder().accountId(accountId).documentNumber("123456").build();
 
-        when(mockAcccountService.getById(accountId)).thenReturn(mockAccount);
+        when(mockAccountService.getById(accountId)).thenReturn(mockAccount);
 
         AccountDTO actualAccount = new ObjectMapper().readValue(mockMvc.perform(get("/accounts/{accountId}", accountId))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(), AccountDTO.class);
@@ -46,8 +46,8 @@ class AccountControllerTest {
 
     @Test
     void getShouldReturnNotFoundStatusWhenAccountDoesNotExists() throws Exception {
-        Long nonExistentAccountId = 666L;
-        when(mockAcccountService.getById(nonExistentAccountId)).thenThrow(new EntityNotFoundException());
+        long nonExistentAccountId = 666;
+        when(mockAccountService.getById(nonExistentAccountId)).thenThrow(new EntityNotFoundException());
 
         mockMvc.perform(get("/accounts/{accountId}", nonExistentAccountId))
                 .andExpect(status().isNotFound()).andReturn();
@@ -61,7 +61,7 @@ class AccountControllerTest {
         Account inAccount = Account.builder().documentNumber(documentNumber).build();
         Account mockAccount = Account.builder().accountId(accountId).documentNumber(documentNumber).build();
 
-        when(mockAcccountService.createAccount(inAccount)).thenReturn(mockAccount);
+        when(mockAccountService.createAccount(inAccount)).thenReturn(mockAccount);
 
         AccountDTO requestAccount = AccountDTO.builder().documentNumber(documentNumber).build();
 
@@ -80,7 +80,7 @@ class AccountControllerTest {
         String documentNumber = "123456";
 
         Account inAccount = Account.builder().documentNumber(documentNumber).build();
-        when(mockAcccountService.createAccount(inAccount)).thenThrow(
+        when(mockAccountService.createAccount(inAccount)).thenThrow(
                 new ConstraintViolationException("",
                         new SQLIntegrityConstraintViolationException(new SQLIntegrityConstraintViolationException("")), ""));
 

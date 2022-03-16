@@ -25,7 +25,7 @@ class OperationTypeServiceTest {
 
     @Test
     void getShouldReturnOperationType() {
-        long existentOperationTypeId = 123L;
+        long existentOperationTypeId = 123;
         OperationType mockOperationType = OperationType.builder()
                 .operationTypeId(existentOperationTypeId)
                 .description("Pagamento")
@@ -40,7 +40,7 @@ class OperationTypeServiceTest {
 
     @Test
     void getShouldThrowEntityNotFoundExceptionWhenOperationTypeDoesNotExists() {
-        long nonExistentOperationTypeId = 123L;
+        long nonExistentOperationTypeId = 123;
         when(mockOperationTypeRepository.findById(nonExistentOperationTypeId)).thenReturn(Optional.empty());
 
         EntityNotFoundException actualException = assertThrows(

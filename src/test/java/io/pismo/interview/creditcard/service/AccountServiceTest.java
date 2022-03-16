@@ -25,7 +25,7 @@ class AccountServiceTest {
 
     @Test
     void getShouldReturnAccount() {
-        long existentAccountId = 123L;
+        long existentAccountId = 123;
         Account mockAccount = Account.builder().accountId(existentAccountId).documentNumber("123456").build();
         when(mockAccountRepository.findById(existentAccountId)).thenReturn(Optional.of(mockAccount));
 
@@ -35,7 +35,7 @@ class AccountServiceTest {
 
     @Test
     void getShouldThrowEntityNotFoundExceptionWhenAccountDoesNotExists() {
-        long nonExistentAccountId = 123L;
+        long nonExistentAccountId = 123;
         when(mockAccountRepository.findById(nonExistentAccountId)).thenReturn(Optional.empty());
 
         EntityNotFoundException actualException = assertThrows(

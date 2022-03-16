@@ -31,7 +31,7 @@ class TransactionServiceTest {
 
     @Test
     void createShouldReturnTransactionWhenValidNegativeAmount() throws InvalidOperationTypeException {
-        long operationTypeId = 1L;
+        long operationTypeId = 1;
         BigDecimal amount = new BigDecimal("10.5").negate();
 
         OperationType mockOperationType = OperationType.builder()
@@ -57,7 +57,7 @@ class TransactionServiceTest {
 
     @Test
     void createShouldReturnTransactionWhenValidPositiveAmount() throws InvalidOperationTypeException {
-        long operationTypeId = 1L;
+        long operationTypeId = 1;
         BigDecimal amount = new BigDecimal("10.5");
 
         OperationType mockOperationType = OperationType.builder()
@@ -84,7 +84,7 @@ class TransactionServiceTest {
     @Test
     void createShouldReturnTransactionWhenAnyAmountIsAllowed() {
         Stream.of(new BigDecimal("10.5").negate(), new BigDecimal("10.5")).forEach(amount -> {
-            long operationTypeId = 10L;
+            long operationTypeId = 10;
             OperationType mockOperationType = OperationType.builder()
                     .operationTypeId(operationTypeId)
                     .description("POSSIBLE ANY AMOUNT VALUE")
@@ -115,7 +115,7 @@ class TransactionServiceTest {
     @Test
     void createShouldThrowInvalidOperationTypeExceptionWhenAnyValueAmountIsNotAllowed() {
         Stream.of(new BigDecimal("10.5").negate(), new BigDecimal("10.5")).forEach(amount -> {
-            long operationTypeId = 10L;
+            long operationTypeId = 10;
             OperationType mockOperationType = OperationType.builder()
                     .operationTypeId(operationTypeId)
                     .description("POSSIBLE NONE AMOUNT VALUE")
@@ -143,7 +143,7 @@ class TransactionServiceTest {
 
     @Test
     void createShouldThrowInvalidOperationTypeExceptionWhenInvalidPositiveAmount() {
-        long operationTypeId = 1L;
+        long operationTypeId = 1;
         BigDecimal amount = new BigDecimal("10.5");
 
         OperationType mockOperationType = OperationType.builder()
@@ -171,7 +171,7 @@ class TransactionServiceTest {
 
     @Test
     void createShouldThrowInvalidOperationTypeExceptionWhenInvalidNegativeAmount() {
-        long operationTypeId = 1L;
+        long operationTypeId = 1;
         BigDecimal amount = new BigDecimal("10.5").negate();
 
         OperationType mockOperationType = OperationType.builder()

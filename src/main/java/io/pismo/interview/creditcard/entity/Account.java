@@ -20,7 +20,7 @@ public class Account {
     @Column(name = "account_id")
     private Long accountId;
 
-    @Column(name = "document_number", nullable = false)
+    @Column(name = "document_number", nullable = false, unique = true)
     private String documentNumber;
 }
 
