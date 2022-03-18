@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 @ControllerAdvice
 public class GlobalHandlerException extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({InvalidOperationTypeException.class})
+    @ExceptionHandler({InvalidOperationTypeException.class, InvalidOperationException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
     public ExceptionData handleToUnprocessableEntity(Exception e) {

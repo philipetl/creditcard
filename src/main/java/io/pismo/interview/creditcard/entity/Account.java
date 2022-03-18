@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "accounts")
@@ -22,5 +23,8 @@ public class Account {
 
     @Column(name = "document_number", nullable = false, unique = true)
     private String documentNumber;
+
+    @Column(name = "available_credit_limit", nullable = false)
+    private BigDecimal availableCreditLimit;
 }
 

@@ -23,7 +23,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public TransactionDTO create(@RequestBody TransactionDTO transactionDTO) throws InvalidOperationTypeException {
+    public TransactionDTO create(@RequestBody TransactionDTO transactionDTO) throws Exception {
         Transaction transaction = modelMapper.map(transactionDTO, Transaction.class);
         return modelMapper.map(transactionService.createTransaction(transaction), TransactionDTO.class);
     }

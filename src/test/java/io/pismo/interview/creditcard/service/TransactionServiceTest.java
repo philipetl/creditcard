@@ -30,7 +30,7 @@ class TransactionServiceTest {
     OperationTypeService mockOperationTypeService;
 
     @Test
-    void createShouldReturnTransactionWhenValidNegativeAmount() throws InvalidOperationTypeException {
+    void createShouldReturnTransactionWhenValidNegativeAmount() throws Exception {
         long operationTypeId = 1;
         BigDecimal amount = new BigDecimal("10.5").negate();
 
@@ -56,7 +56,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void createShouldReturnTransactionWhenValidPositiveAmount() throws InvalidOperationTypeException {
+    void createShouldReturnTransactionWhenValidPositiveAmount() throws Exception {
         long operationTypeId = 1;
         BigDecimal amount = new BigDecimal("10.5");
 
@@ -105,6 +105,8 @@ class TransactionServiceTest {
             try {
                 actualTransaction = transactionService.createTransaction(mockTransaction);
             } catch (InvalidOperationTypeException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
