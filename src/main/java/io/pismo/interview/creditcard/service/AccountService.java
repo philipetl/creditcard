@@ -6,7 +6,6 @@ import io.pismo.interview.creditcard.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.math.BigDecimal;
 
 @Service
 public class AccountService {
@@ -25,10 +24,10 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public void updateCreditLimit(Transaction transaction){
+    public void updateCreditLimit(Transaction transaction) {
         Account account = transaction.getAccount();
 
-        BigDecimal newCreditLimit = account.getAvailableCreditLimit().add(transaction.getAmount());
+        double newCreditLimit = account.getAvailableCreditLimit() + transaction.getAmount();
         account.setAvailableCreditLimit(newCreditLimit);
 
         accountRepository.save(account);

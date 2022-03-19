@@ -8,8 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
@@ -26,6 +24,6 @@ public class AccountDTO {
     private String documentNumber;
 
     @JsonProperty("available_credit_limit")
-    private BigDecimal availableCreditLimit;
+    private double availableCreditLimit;
 }
 

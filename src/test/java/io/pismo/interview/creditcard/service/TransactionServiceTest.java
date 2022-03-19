@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.math.BigDecimal;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,7 +34,7 @@ class TransactionServiceTest {
     @Test
     void createShouldReturnTransactionWhenValidNegativeAmount() throws Exception {
         long operationTypeId = 1;
-        BigDecimal amount = new BigDecimal("10.5").negate();
+        double amount = -10.5;
 
         OperationType mockOperationType = OperationType.builder()
                 .operationTypeId(operationTypeId)
@@ -52,7 +51,7 @@ class TransactionServiceTest {
 
         when(mockOperationTypeService.getById(operationTypeId)).thenReturn(mockOperationType);
         when(mockAccountService.getById(1L)).thenReturn(Account.builder()
-                .accountId(1L).documentNumber("123456").availableCreditLimit(new BigDecimal("1000.0")).build());
+                .accountId(1L).documentNumber("123456").availableCreditLimit(1000.0).build());
         when(mockTransactionRepository.save(mockTransaction)).thenReturn(mockTransaction);
 
         Transaction actualTransaction = transactionService.createTransaction(mockTransaction);
@@ -63,7 +62,7 @@ class TransactionServiceTest {
     @Test
     void createShouldReturnTransactionWhenValidPositiveAmount() throws Exception {
         long operationTypeId = 1;
-        BigDecimal amount = new BigDecimal("10.5");
+        double amount = 10.5;
 
         OperationType mockOperationType = OperationType.builder()
                 .operationTypeId(operationTypeId)
@@ -80,7 +79,7 @@ class TransactionServiceTest {
 
         when(mockOperationTypeService.getById(operationTypeId)).thenReturn(mockOperationType);
         when(mockAccountService.getById(1L)).thenReturn(Account.builder()
-                .accountId(1L).documentNumber("123456").availableCreditLimit(new BigDecimal("1000.0")).build());
+                .accountId(1L).documentNumber("123456").availableCreditLimit(1000.0).build());
         when(mockTransactionRepository.save(mockTransaction)).thenReturn(mockTransaction);
 
         Transaction actualTransaction = transactionService.createTransaction(mockTransaction);
@@ -90,7 +89,7 @@ class TransactionServiceTest {
 
     @Test
     void createShouldReturnTransactionWhenAnyAmountIsAllowed() {
-        Stream.of(new BigDecimal("10.5").negate(), new BigDecimal("10.5")).forEach(amount -> {
+        Stream.of(-10.5, 10.5).forEach(amount -> {
             long operationTypeId = 10;
             OperationType mockOperationType = OperationType.builder()
                     .operationTypeId(operationTypeId)
@@ -106,6 +105,7 @@ class TransactionServiceTest {
                     .build();
 
             when(mockOperationTypeService.getById(operationTypeId)).thenReturn(mockOperationType);
+            when(mockAccountService.getById(1L)).thenReturn(Account.builder().accountId(1L).availableCreditLimit(1000.).documentNumber("11111111").build());
             when(mockTransactionRepository.save(mockTransaction)).thenReturn(mockTransaction);
 
             Transaction actualTransaction = null;
@@ -121,7 +121,7 @@ class TransactionServiceTest {
 
     @Test
     void createShouldThrowInvalidOperationTypeExceptionWhenAnyValueAmountIsNotAllowed() {
-        Stream.of(new BigDecimal("10.5").negate(), new BigDecimal("10.5")).forEach(amount -> {
+        Stream.of(-10.5, 10.5).forEach(amount -> {
             long operationTypeId = 10;
             OperationType mockOperationType = OperationType.builder()
                     .operationTypeId(operationTypeId)
@@ -151,7 +151,7 @@ class TransactionServiceTest {
     @Test
     void createShouldThrowInvalidOperationTypeExceptionWhenInvalidPositiveAmount() {
         long operationTypeId = 1;
-        BigDecimal amount = new BigDecimal("10.5");
+        double amount = 10.5;
 
         OperationType mockOperationType = OperationType.builder()
                 .operationTypeId(operationTypeId)
@@ -179,7 +179,7 @@ class TransactionServiceTest {
     @Test
     void createShouldThrowInvalidOperationTypeExceptionWhenInvalidNegativeAmount() {
         long operationTypeId = 1;
-        BigDecimal amount = new BigDecimal("10.5").negate();
+        double amount = -10.5;
 
         OperationType mockOperationType = OperationType.builder()
                 .operationTypeId(operationTypeId)

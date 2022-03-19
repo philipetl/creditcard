@@ -9,7 +9,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -37,7 +36,7 @@ public class Transaction {
     private OperationType operationType;
 
     @Column(name = "amount", nullable = false)
-    private BigDecimal amount;
+    private double amount;
 
     @CreatedDate
     @Column(name = "event_date")

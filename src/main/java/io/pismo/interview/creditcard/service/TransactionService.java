@@ -8,8 +8,6 @@ import io.pismo.interview.creditcard.exception.InvalidOperationTypeException;
 import io.pismo.interview.creditcard.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-
 @Service
 public class TransactionService {
 
@@ -31,17 +29,24 @@ public class TransactionService {
     }
 
     private Transaction validate(Transaction transaction) throws Exception {
+        validateOperationType(transaction);
+        validateAccountAvailableLimit(transaction);
+
+        return transaction;
+    }
+
+    private void validateOperationType(Transaction transaction) throws InvalidOperationTypeException {
         OperationType operationType = operationTypeService.getById(transaction.getOperationType().getOperationTypeId());
 
         if (operationType.getAllowNegative() && operationType.getAllowPositive()) {
-            return transaction;
+            return;
         } else if (operationType.getAllowPositive()) {
-            if (transaction.getAmount().doubleValue() < 0) {
+            if (transaction.getAmount() < 0) {
                 throw new InvalidOperationTypeException(String.format("Operation type (%s) does not allow negative amount value (%s).",
                         operationType.getDescription(), transaction.getAmount()));
             }
         } else if (operationType.getAllowNegative()) {
-            if (transaction.getAmount().doubleValue() >= 0) {
+            if (transaction.getAmount() >= 0) {
                 throw new InvalidOperationTypeException(String.format("Operation type (%s) does not allow positive amount value (%s).",
                         operationType.getDescription(), transaction.getAmount()));
             }
@@ -49,15 +54,15 @@ public class TransactionService {
             throw new InvalidOperationTypeException(String.format("Operation type (%s) does not allow any amount value (%s).",
                     operationType.getDescription(), transaction.getAmount()));
         }
+    }
 
+    private void validateAccountAvailableLimit(Transaction transaction) throws InvalidOperationException {
         Account account = accountService.getById(transaction.getAccount().getAccountId());
         transaction.setAccount(account);
 
-        BigDecimal newLimit = account.getAvailableCreditLimit().add(transaction.getAmount());
-        if(newLimit.doubleValue() < 0){
+        double newLimit = account.getAvailableCreditLimit() + transaction.getAmount();
+        if (newLimit < 0) {
             throw new InvalidOperationException("Operation denied due credit limit.");
         }
-
-        return transaction;
     }
 }

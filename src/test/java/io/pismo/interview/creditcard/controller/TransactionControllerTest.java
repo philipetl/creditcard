@@ -14,8 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -35,7 +33,7 @@ class TransactionControllerTest {
     void createShouldReturnTransactionWhenCreatingNonExistentTransactionWithValidAccountAndOperationType() throws Exception {
         long accountId = 10;
         long operationTypeId = 1;
-        BigDecimal amount = new BigDecimal("10.50");
+        double amount = 10.50;
 
         Transaction mockTransaction = Transaction.builder()
                 .operationType(OperationType.builder().operationTypeId(operationTypeId).build())

@@ -5,11 +5,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -25,9 +23,9 @@ class AccountRepositoryTest {
     @BeforeAll
     public void setup() {
         accountRepository.saveAll(Arrays.asList(
-                Account.builder().accountId(1L).documentNumber("111111").availableCreditLimit(new BigDecimal("1000.0")).build(),
-                Account.builder().accountId(2L).documentNumber("222222").availableCreditLimit(new BigDecimal("2000.0")).build(),
-                Account.builder().accountId(3L).documentNumber("333333").availableCreditLimit(new BigDecimal("3000.0")).build()));
+                Account.builder().accountId(1L).documentNumber("111111").availableCreditLimit(1000.0).build(),
+                Account.builder().accountId(2L).documentNumber("222222").availableCreditLimit(2000.0).build(),
+                Account.builder().accountId(3L).documentNumber("333333").availableCreditLimit(3000.0).build()));
     }
 
     @Test
@@ -45,14 +43,14 @@ class AccountRepositoryTest {
     }
 
     @Test
-    public void createShouldReturnAccounWhenCreatingNonExistentDocumentNumber() {
+    public void createShouldReturnAccountWhenCreatingNonExistentDocumentNumber() {
         String documentNumber = "123456";
-        Account accountToCreate = Account.builder().documentNumber(documentNumber).availableCreditLimit(new BigDecimal("1000.0")).build();
+        Account accountToCreate = Account.builder().documentNumber(documentNumber).availableCreditLimit(1000.0).build();
 
         Account actualAccount = accountRepository.save(accountToCreate);
 
         assertEquals(accountToCreate.getDocumentNumber(), actualAccount.getDocumentNumber());
-        assertTrue(actualAccount.getAccountId() != null);
+        assertNotNull(actualAccount.getAccountId());
     }
 
     @Test

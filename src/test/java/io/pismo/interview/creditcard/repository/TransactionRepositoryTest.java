@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.math.BigDecimal;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -35,13 +33,13 @@ class TransactionRepositoryTest {
                 .operationTypeId(1L).description("COMPRA A VISTA")
                 .allowNegative(true).allowPositive(false).build());
 
-        existentAccount = accountRepository.save(Account.builder().documentNumber("100000").availableCreditLimit(new BigDecimal("1000.0")).build());
+        existentAccount = accountRepository.save(Account.builder().documentNumber("100000").availableCreditLimit(1000.0).build());
     }
 
     @Test
     public void createShouldReturnTransaction() {
         Transaction validTransaction = Transaction.builder()
-                .amount(new BigDecimal("10.0").negate())
+                .amount(-10.0)
                 .operationType(OperationType.builder().operationTypeId(1L).build())
                 .account(existentAccount)
                 .build();
@@ -59,8 +57,7 @@ class TransactionRepositoryTest {
     @Test
     public void createShouldThrowExceptionWhenNotNullFieldsAreMissing() {
         Transaction missingFieldTransaction = Transaction.builder()
-                .amount(new BigDecimal("10.0").negate())
-                .operationType(OperationType.builder().operationTypeId(1L).build()).build();
+                .amount(-10.0).operationType(OperationType.builder().operationTypeId(1L).build()).build();
 
         assertThrows(DataIntegrityViolationException.class, () -> transactionRepository.save(missingFieldTransaction));
     }
@@ -69,9 +66,8 @@ class TransactionRepositoryTest {
     public void createShouldThrowExceptionWhenNonExistentOperationType() {
         long nonExistentOperationTypeId = 10;
         Transaction missingFieldTransaction = Transaction.builder()
-                .amount(new BigDecimal("10.0").negate())
-                .operationType(OperationType.builder().operationTypeId(nonExistentOperationTypeId).build())
-                .account(Account.builder().accountId(1L).build()).build();
+                .amount(-10.0).operationType(OperationType.builder().operationTypeId(nonExistentOperationTypeId).build())
+                        .account(Account.builder().accountId(1L).build()).build();
 
         assertThrows(DataIntegrityViolationException.class, () -> transactionRepository.save(missingFieldTransaction));
     }

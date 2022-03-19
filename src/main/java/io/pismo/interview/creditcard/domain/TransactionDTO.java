@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -29,7 +28,7 @@ public class TransactionDTO {
     @JsonProperty("operation_type_id")
     private Long operationTypeId;
 
-    private BigDecimal amount;
+    private double amount;
 
     @JsonProperty("event_date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
