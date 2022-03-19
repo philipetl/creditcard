@@ -29,6 +29,9 @@ class TransactionServiceTest {
     @MockBean
     OperationTypeService mockOperationTypeService;
 
+    @MockBean
+    AccountService mockAccountService;
+
     @Test
     void createShouldReturnTransactionWhenValidNegativeAmount() throws Exception {
         long operationTypeId = 1;
@@ -48,6 +51,8 @@ class TransactionServiceTest {
                 .build();
 
         when(mockOperationTypeService.getById(operationTypeId)).thenReturn(mockOperationType);
+        when(mockAccountService.getById(1L)).thenReturn(Account.builder()
+                .accountId(1L).documentNumber("123456").availableCreditLimit(new BigDecimal("1000.0")).build());
         when(mockTransactionRepository.save(mockTransaction)).thenReturn(mockTransaction);
 
         Transaction actualTransaction = transactionService.createTransaction(mockTransaction);
@@ -74,6 +79,8 @@ class TransactionServiceTest {
                 .build();
 
         when(mockOperationTypeService.getById(operationTypeId)).thenReturn(mockOperationType);
+        when(mockAccountService.getById(1L)).thenReturn(Account.builder()
+                .accountId(1L).documentNumber("123456").availableCreditLimit(new BigDecimal("1000.0")).build());
         when(mockTransactionRepository.save(mockTransaction)).thenReturn(mockTransaction);
 
         Transaction actualTransaction = transactionService.createTransaction(mockTransaction);
@@ -104,8 +111,6 @@ class TransactionServiceTest {
             Transaction actualTransaction = null;
             try {
                 actualTransaction = transactionService.createTransaction(mockTransaction);
-            } catch (InvalidOperationTypeException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }

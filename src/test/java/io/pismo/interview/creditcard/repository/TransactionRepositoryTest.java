@@ -35,7 +35,7 @@ class TransactionRepositoryTest {
                 .operationTypeId(1L).description("COMPRA A VISTA")
                 .allowNegative(true).allowPositive(false).build());
 
-        existentAccount = accountRepository.save(Account.builder().documentNumber("100000").build());
+        existentAccount = accountRepository.save(Account.builder().documentNumber("100000").availableCreditLimit(new BigDecimal("1000.0")).build());
     }
 
     @Test

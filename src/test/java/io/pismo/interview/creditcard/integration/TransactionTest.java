@@ -1,12 +1,9 @@
 package io.pismo.interview.creditcard.integration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.pismo.interview.creditcard.CreditcardApplication;
-import io.pismo.interview.creditcard.controller.TransactionController;
 import io.pismo.interview.creditcard.domain.TransactionDTO;
 import io.pismo.interview.creditcard.entity.Account;
 import io.pismo.interview.creditcard.entity.OperationType;
-import io.pismo.interview.creditcard.repository.AccountRepository;
 import io.pismo.interview.creditcard.repository.OperationTypeRepository;
 import io.pismo.interview.creditcard.repository.TransactionRepository;
 import io.pismo.interview.creditcard.service.AccountService;
@@ -16,26 +13,26 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Import({TransactionController.class, AccountService.class, TransactionService.class, OperationTypeService.class,
-    AccountRepository.class, OperationTypeRepository.class, TransactionRepository.class})
-@WebMvcTest(CreditcardApplication.class)
+@SpringBootTest(classes = CreditcardApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TransactionTest {
 
+    @LocalServerPort
+    private int port;
+
     @Autowired
-    MockMvc mockMvc;
+    TestRestTemplate restTemplate;
 
     @Autowired
     TransactionService transactionService;
@@ -62,16 +59,21 @@ class TransactionTest {
     }
 
     @Test
-    void createException() throws Exception {
+    void createShouldReturnUnprocessableEntityWhenOccursInvalidOperationDueLimit() {
         Account account = Account.builder().documentNumber("12345").availableCreditLimit(new BigDecimal("100.0")).build();
 
         accountService.createAccount(account);
 
         TransactionDTO requestTransactionDTO = TransactionDTO.builder().operationTypeId(3L).amount(new BigDecimal("100.1")).build();
 
-        mockMvc.perform(post("/transactions")
-                .content(new ObjectMapper().writeValueAsString(requestTransactionDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnprocessableEntity());
+        ResponseEntity<String> actualResponse = this.restTemplate
+                .postForEntity("http://localhost:" + port + "/transactions", requestTransactionDTO, String.class);
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, actualResponse.getStatusCode());
+    }
+
+    @Test
+    void createShouldReturnTransactionWhenPassingAccountWithLimitToSpendAndCorrectOperationType() {
+        // TODO: include test body
     }
 }

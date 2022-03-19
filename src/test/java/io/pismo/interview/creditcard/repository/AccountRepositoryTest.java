@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -24,9 +25,9 @@ class AccountRepositoryTest {
     @BeforeAll
     public void setup() {
         accountRepository.saveAll(Arrays.asList(
-                Account.builder().accountId(1L).documentNumber("111111").build(),
-                Account.builder().accountId(2L).documentNumber("222222").build(),
-                Account.builder().accountId(3L).documentNumber("333333").build()));
+                Account.builder().accountId(1L).documentNumber("111111").availableCreditLimit(new BigDecimal("1000.0")).build(),
+                Account.builder().accountId(2L).documentNumber("222222").availableCreditLimit(new BigDecimal("2000.0")).build(),
+                Account.builder().accountId(3L).documentNumber("333333").availableCreditLimit(new BigDecimal("3000.0")).build()));
     }
 
     @Test
@@ -46,7 +47,7 @@ class AccountRepositoryTest {
     @Test
     public void createShouldReturnAccounWhenCreatingNonExistentDocumentNumber() {
         String documentNumber = "123456";
-        Account accountToCreate = Account.builder().documentNumber(documentNumber).build();
+        Account accountToCreate = Account.builder().documentNumber(documentNumber).availableCreditLimit(new BigDecimal("1000.0")).build();
 
         Account actualAccount = accountRepository.save(accountToCreate);
 

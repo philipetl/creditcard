@@ -28,7 +28,7 @@ class OperationTypeServiceTest {
         long existentOperationTypeId = 123;
         OperationType mockOperationType = OperationType.builder()
                 .operationTypeId(existentOperationTypeId)
-                .description("Pagamento")
+                .description("PAGAMENTO")
                 .allowNegative(false)
                 .allowPositive(true)
                 .build();
